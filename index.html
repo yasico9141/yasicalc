@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yasicalc</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <div class="logo-plate" aria-label="yasicalc">
+                <span class="logo-main">yasi</span><span class="logo-accent">calc</span>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <button class="btn-menu" onclick="app.toggleSidebar()" aria-label="シート">シート</button>
+            <div class="unit-config">
+                <span>単位</span>
+                <input type="text" id="unitInput" value="円" maxlength="5">
+            </div>
+            <div class="app-controls">
+                <button onclick="app.showHelp()" class="btn-help">使い方</button>
+                <button onclick="app.exportData()" class="btn-export">書き出し(JSON)</button>
+                <button onclick="document.getElementById('fileInput').click()" class="btn-import">読み込み</button>
+                <button onclick="app.resetData()" class="btn-danger">初期化</button>
+                <input type="file" id="fileInput" class="hidden" accept=".json" onchange="app.importData(this)">
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar-backdrop" onclick="app.closeSidebar()"></div>
+
+    <div class="main-container">
+        <aside class="sheet-sidebar">
+            <div class="book-switcher">
+                <div class="book-list-header">Books</div>
+                <div class="book-controls">
+                    <select id="bookSelect" class="book-select" onchange="app.selectBook(this.value)"></select>
+                    <button class="book-action-btn" onclick="app.addBook()" title="ブック追加" aria-label="ブック追加">＋</button>
+                    <button class="book-action-btn rename" id="renameBookBtn" onclick="app.renameBook()" title="ブック名編集" aria-label="ブック名編集">✎</button>
+                    <button class="book-action-btn danger" id="deleteBookBtn" onclick="app.deleteBook()" title="ブック削除" aria-label="ブック削除">－</button>
+                </div>
+            </div>
+            <div class="sheet-list-header">Sheets</div>
+            <ul class="sheet-list" id="sheetList"></ul>
+            <button class="add-sheet-btn" onclick="app.addSheet()">+ Add New Sheet</button>
+            <div class="sidebar-spacer"></div>
+            <button class="sheet-item summary-tab-btn" id="summaryTab" onclick="app.selectSummary()">
+                <span>まとめて見る</span>
+            </button>
+        </aside>
+
+        <main id="mainEditor"></main>
+    </div>
+
+    <div id="helpModal" class="modal-overlay" onclick="if(event.target===this) app.hideHelp()">
+        <div class="modal-content">
+            <button class="modal-close" onclick="app.hideHelp()">×</button>
+            <h2 class="modal-title">yasicalc の使い方</h2>
+
+            <div class="help-section">
+                <h3>はじめに（最短3ステップ）</h3>
+                <p>yasicalc は、ブックの中にシートを作って管理できる計算アプリです。必要に応じて他シートを参照しながら合計を出せます。まずは次の3ステップで使い始められます。</p>
+                <ul>
+                    <li><strong>1. 単位を設定:</strong> 右上の「単位」に 円 / 万円 / USD などを入力します。</li>
+                    <li><strong>2. ブック / シートを作成:</strong> 左側のBooksでブックを切り替え、必要なら「+ Add New Sheet」でシートを追加します。</li>
+                    <li><strong>3. 行を追加:</strong> 「+ 行を追加」で項目名・種類・金額（または参照先）を入力します。</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>シート編集（行ごとの役割）</h3>
+                <ul>
+                    <li><strong>＋ / －:</strong> 各行を加算するか減算するかを切り替えます。支出は「－」にすると管理しやすくなります。</li>
+                    <li><strong>項目名:</strong> 例）家賃、食費、外注費など。あとで見返して意味が分かる名前がおすすめです。</li>
+                    <li><strong>種類「金額」:</strong> 数値を直接入力する通常行です。</li>
+                    <li><strong>種類「参照」:</strong> 別シートの合計を取り込む行です。カテゴリ集計や上位集計に向いています。</li>
+                    <li><strong>行を複製 / 削除:</strong> 似た行をすばやく増やす、不要行を整理するのに使います。</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>合計・集計の見方</h3>
+                <ul>
+                    <li><strong>シート画面:</strong> タイトル付近の「合計」に、そのシート単体の結果が表示されます。</li>
+                    <li><strong>まとめて見る:</strong> 選択中ブック内のシート合計と総合計を一覧で確認できます。</li>
+                    <li><strong>循環参照エラー:</strong> A→B→A のように参照がループすると計算できません。参照関係を一方向に直してください。</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>保存・復元</h3>
+                <ul>
+                    <li><strong>書き出し(JSON):</strong> 現在のデータをファイル保存します。定期バックアップにおすすめです。</li>
+                    <li><strong>読み込み:</strong> 書き出したJSONを取り込んで状態を復元できます。</li>
+                    <li><strong>初期化:</strong> すべてのデータを削除して初期状態に戻します。実行前に書き出し推奨です。</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>スマホ利用のコツ</h3>
+                <ul>
+                    <li><strong>シート / ブック切替:</strong> 上部の「シート」からサイドバーを開き、BooksとSheetsを切り替えます。</li>
+                    <li><strong>金額入力:</strong> 数字キーボードで入力できます。カンマ付き表示にも対応しています。</li>
+                    <li><strong>横幅が狭いとき:</strong> まとめ表示の表は横スクロールで確認できます。</li>
+                    <li><strong>モーダルを閉じる:</strong> 「×」またはモーダル外タップで閉じられます。</li>
+                    <li><strong>安全運用:</strong> 大きな変更の前は「書き出し(JSON)」で保存しておくと安心です。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
