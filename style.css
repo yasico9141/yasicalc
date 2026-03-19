@@ -1233,6 +1233,15 @@ select:focus-visible {
         -webkit-overflow-scrolling: touch;
     }
 
+    .app-header {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        padding-top: calc(var(--space-4) + env(safe-area-inset-top));
+    }
+
     body.sidebar-open {
         overflow: hidden;
     }
