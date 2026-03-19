@@ -1227,6 +1227,12 @@ select:focus-visible {
 }
 
 @media (max-width: 720px) {
+    body {
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
     body.sidebar-open {
         overflow: hidden;
     }
@@ -1325,6 +1331,7 @@ select:focus-visible {
 
     .sheet-list {
         max-height: calc(100vh - 290px);
+        max-height: calc(100dvh - 290px);
     }
 
     .book-controls {
@@ -1338,6 +1345,7 @@ select:focus-visible {
 
     main {
         min-height: calc(100vh - 250px);
+        min-height: calc(100dvh - 250px);
         padding: 16px;
     }
 
@@ -1351,6 +1359,14 @@ select:focus-visible {
         width: auto;
         flex: 1 1 auto;
         min-width: 0;
+        min-height: 44px;
+        font-size: clamp(1.18rem, 5.2vw, 1.48rem);
+        letter-spacing: 0.03em;
+    }
+
+    .sheet-item .sheet-name {
+        font-size: 0.86rem;
+        max-width: 170px;
     }
 
     .sheet-actions {
@@ -1369,12 +1385,25 @@ select:focus-visible {
     }
 
     .row-item {
-        grid-template-columns: 44px minmax(0, 1fr) 112px 78px;
-        grid-template-areas:
-            "drag label type actions"
-            "drag value value actions";
+        --mobile-type-col-width: 112px;
+        --mobile-row-gap: 8px;
+        grid-template-columns: 44px var(--mobile-type-col-width) minmax(0, 1fr) 84px;
         align-items: center;
         gap: 8px;
+    }
+
+    .row-item.row-type-value {
+        grid-template-areas:
+            "drag label label actions"
+            "drag type . actions"
+            "drag value value actions";
+    }
+
+    .row-item.row-type-ref {
+        grid-template-areas:
+            "drag label label actions"
+            "drag type value actions"
+            "drag . value actions";
     }
 
     .row-item > :nth-child(1) {
@@ -1400,6 +1429,21 @@ select:focus-visible {
     .ref-input-group,
     .value-input-group {
         grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .row-item.row-type-ref .ref-input-group {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .row-item.row-type-ref .ref-amount {
+        width: calc(100% + var(--mobile-type-col-width) + var(--mobile-row-gap));
+        min-width: 0;
+        margin-left: calc(-1 * (var(--mobile-type-col-width) + var(--mobile-row-gap)));
+    }
+
+    .row-item.row-type-ref > :nth-child(4) {
+        align-self: stretch;
     }
 
     .ref-amount {

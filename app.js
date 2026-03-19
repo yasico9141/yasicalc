@@ -571,6 +571,10 @@
                 const tokenCount = this.normalizeAmountInput(rawPrefix).length;
                 const formattedDisplay = this.formatValueDisplayByOperator(rawValue, op);
 
+                // Selection/caret drags on mobile can fire input events.
+                // If visual value is unchanged, keep browser-managed selection as-is.
+                if (formattedDisplay === rawValue) return;
+
                 inputEl.value = formattedDisplay;
 
                 if (typeof inputEl.setSelectionRange === 'function') {
@@ -867,7 +871,7 @@
 
                 sheet.rows.forEach(row => {
                     const rowEl = document.createElement('div');
-                    rowEl.className = 'row-item';
+                    rowEl.className = `row-item row-type-${row.type}`;
 
                     const otherSheets = this.getActiveSheets().filter(s => s.id !== sheetId);
                     const op = row.operator !== undefined ? row.operator : 1;
