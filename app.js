@@ -502,10 +502,20 @@
                 }
             }
 
+            normalizeNumericInputChars(value) {
+                return String(value ?? '')
+                    // Convert full-width numerals and symbols used on mobile JP keyboards.
+                    .replace(/[０-９]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 0xFEE0))
+                    .replace(/[．。]/g, '.')
+                    .replace(/，/g, ',')
+                    .replace(/＋/g, '+')
+                    .replace(/[－−ー]/g, '-');
+            }
+
             normalizeAmountInput(value) {
-                const cleaned = String(value ?? '')
+                const cleaned = this.normalizeNumericInputChars(value)
                     .trim()
-                    .replace(/[,\s，]/g, '')
+                    .replace(/[,\s]/g, '')
                     .replace(/^[-+]/, '');
 
                 const dotIndex = cleaned.indexOf('.');
@@ -562,7 +572,7 @@
                 return displayValue.length;
             }
 
-            handleValueInput(inputEl, op) {
+            handleValueInput(inputEl, op, sheetId = null, rowId = null) {
                 if (!inputEl) return;
 
                 const rawValue = inputEl.value ?? '';
@@ -573,7 +583,12 @@
 
                 // Selection/caret drags on mobile can fire input events.
                 // If visual value is unchanged, keep browser-managed selection as-is.
-                if (formattedDisplay === rawValue) return;
+                if (formattedDisplay === rawValue) {
+                    if (sheetId && rowId) {
+                        this.updateValueRow(sheetId, rowId, rawValue, false);
+                    }
+                    return;
+                }
 
                 inputEl.value = formattedDisplay;
 
@@ -585,9 +600,14 @@
                     );
                     inputEl.setSelectionRange(nextCaret, nextCaret);
                 }
+
+                if (sheetId && rowId) {
+                    // Keep state in sync even when `change` does not fire on some mobile browsers.
+                    this.updateValueRow(sheetId, rowId, inputEl.value, false);
+                }
             }
 
-            updateValueRow(sheetId, rowId, value) {
+            updateValueRow(sheetId, rowId, value, shouldRender = true) {
                 const sheet = this.getActiveSheets().find(s => s.id === sheetId);
                 if (!sheet) return;
 
@@ -596,7 +616,32 @@
 
                 const normalized = this.normalizeAmountInput(value);
                 row.value = normalized;
-                this.saveAndRender();
+
+                if (shouldRender) {
+                    this.saveAndRender();
+                    return;
+                }
+
+                this.saveState();
+                this.refreshSheetTotalDisplay(sheetId);
+            }
+
+            getSheetTotalMarkup(totalRes) {
+                if (totalRes.error) {
+                    return `
+                        <span class="text-error" style="font-size:1.5rem">循環参照</span>
+                        <span style="font-size:0.5em; color: var(--text-secondary);">${this.state.unit}</span>
+                    `;
+                }
+                return `${Utils.formatNumber(totalRes.value)} <span style="font-size:0.5em; color: var(--text-secondary);">${this.state.unit}</span>`;
+            }
+
+            refreshSheetTotalDisplay(sheetId) {
+                if (this.state.view !== 'sheet' || this.state.activeSheetId !== sheetId) return;
+                const totalAmountEl = document.querySelector('.sheet-footer-under-title .total-amount');
+                if (!totalAmountEl) return;
+                const totalRes = this.calculateSheetTotal(sheetId);
+                totalAmountEl.innerHTML = this.getSheetTotalMarkup(totalRes);
             }
 
             toggleOperator(sheetId, rowId) {
@@ -886,7 +931,8 @@
                         inputHtml = `
                             <div class="${valueInputGroupClass}">
                                 <input type="text" inputmode="decimal" class="${valueInputClass}" value="${displayValue}" 
-                                    oninput="app.handleValueInput(this, ${op})"
+                                    oninput="app.handleValueInput(this, ${op}, '${sheetId}', '${row.id}')"
+                                    onblur="app.updateValueRow('${sheetId}', '${row.id}', this.value)"
                                     onchange="app.updateValueRow('${sheetId}', '${row.id}', this.value)">
                                 <span class="value-unit-inline">${this.state.unit}</span>
                             </div>
@@ -972,8 +1018,7 @@
                 footer.innerHTML = `
                     <div class="total-label">合計</div>
                     <div class="total-amount">
-                        ${totalRes.error ? '<span class="text-error" style="font-size:1.5rem">循環参照</span>' : Utils.formatNumber(totalRes.value)} 
-                        <span style="font-size:0.5em; color: var(--text-secondary);">${this.state.unit}</span>
+                        ${this.getSheetTotalMarkup(totalRes)}
                     </div>
                 `;
                 container.appendChild(footer);
