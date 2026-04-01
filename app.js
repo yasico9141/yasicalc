@@ -199,13 +199,24 @@
             }
 
             adjustUnitInputWidth(value) {
-                const unitInput = document.getElementById('unitInput');
-                if (!unitInput) return;
-
                 const text = String(value || '').trim() || '円';
-                const minWidth = window.matchMedia('(max-width: 720px)').matches ? 72 : 64;
-                const width = Math.min(96, Math.max(minWidth, 24 + text.length * 16));
-                unitInput.style.width = `${width}px`;
+                const isMobile = window.matchMedia('(max-width: 720px)').matches;
+                const minWidth = isMobile ? 72 : 64;
+                const width = Math.min(96, Math.max(minWidth, 24 + Array.from(text).length * 16));
+                const unitInput = document.getElementById('unitInput');
+                if (unitInput) {
+                    unitInput.style.width = `${width}px`;
+                }
+                this.updateRowUnitReserve(text, isMobile);
+            }
+
+            updateRowUnitReserve(unitText, isMobile = window.matchMedia('(max-width: 720px)').matches) {
+                const text = String(unitText || '').trim() || '円';
+                const unitLength = Array.from(text).length;
+                const baseReserve = isMobile ? 52 : 58;
+                const perCharReserve = isMobile ? 14 : 13;
+                const reserve = Math.min(140, baseReserve + Math.max(0, unitLength - 1) * perCharReserve);
+                document.documentElement.style.setProperty('--row-unit-reserve', `${reserve}px`);
             }
 
             // --- Mobile Sidebar ---
@@ -251,8 +262,8 @@
                 const unitInput = document.getElementById('unitInput');
                 if (unitInput && unitInput.value !== this.state.unit) {
                     unitInput.value = this.state.unit;
-                    this.adjustUnitInputWidth(this.state.unit);
                 }
+                this.adjustUnitInputWidth(this.state.unit);
                 this.render();
             }
 
@@ -1053,7 +1064,7 @@
                         <input type="text" class="row-input" style="font-weight:500;" placeholder="項目名" value="${row.label}"
                             onchange="app.updateRow('${sheetId}', '${row.id}', 'label', this.value)">
                         
-                        <select class="row-select" onchange="app.updateRow('${sheetId}', '${row.id}', 'type', this.value)">
+                        <select class="row-select row-type-select" onchange="app.updateRow('${sheetId}', '${row.id}', 'type', this.value)">
                             <option value="value" ${row.type === 'value' ? 'selected' : ''}>金額</option>
                             <option value="ref" ${row.type === 'ref' ? 'selected' : ''}>参照</option>
                         </select>

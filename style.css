@@ -31,6 +31,8 @@
     --space-6: 24px;
     --space-7: 32px;
     --tap-min: 44px;
+    --row-type-select-width: 5em;
+    --row-unit-reserve: 58px;
     --transition-fast: 0.14s ease;
     --transition-base: 0.2s ease;
     --font-main: "Noto Sans JP", sans-serif;
@@ -847,7 +849,7 @@ main::before {
 
 .row-item {
     display: grid;
-    grid-template-columns: 44px minmax(180px, 1fr) 134px minmax(170px, 1fr) 86px;
+    grid-template-columns: 44px minmax(150px, 0.78fr) var(--row-type-select-width) minmax(220px, 1.22fr) 86px;
     gap: 10px;
     align-items: center;
     padding: 10px;
@@ -859,7 +861,7 @@ main::before {
 }
 
 .row-item.row-type-ref {
-    grid-template-columns: 44px minmax(160px, 0.9fr) 112px minmax(260px, 1.45fr) 86px;
+    grid-template-columns: 44px minmax(150px, 0.78fr) var(--row-type-select-width) minmax(220px, 1.22fr) 86px;
 }
 
 .row-item:hover {
@@ -950,7 +952,7 @@ main::before {
 }
 
 .value-input-group .row-value-input {
-    padding-right: 58px;
+    padding-right: var(--row-unit-reserve);
 }
 
 .value-unit-inline {
@@ -979,40 +981,49 @@ main::before {
 }
 
 .row-item.row-type-ref .ref-input-group {
-    grid-template-columns: minmax(0, 1.8fr) minmax(112px, 0.85fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(150px, 1fr);
 }
 
 .row-item.row-type-ref .ref-amount {
-    min-width: 112px;
+    min-width: 150px;
 }
 
 .ref-amount {
     height: 40px;
     min-width: 132px;
-    padding: 0 12px;
+    padding: 0 var(--row-unit-reserve) 0 12px;
     border-radius: 9px;
     border: 1px solid var(--color-line);
     background: rgba(8, 20, 40, 0.86);
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 7px;
+    gap: 0;
     font-family: var(--font-display);
-    font-size: 0.96rem;
+    font-size: 1.08rem;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--color-text-body);
+    letter-spacing: 0.04em;
+    color: var(--color-text-strong);
     white-space: nowrap;
 }
 
 .ref-amount span {
-    font-family: var(--font-main);
-    font-size: 0.78em;
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
     color: var(--color-text-soft);
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 .ref-amount.is-plus {
-    color: #d9ecff;
+    color: var(--color-text-strong);
 }
 
 .ref-amount.is-minus {
@@ -1048,6 +1059,13 @@ main::before {
     background-color: rgba(8, 20, 40, 0.9);
     opacity: 1;
     filter: brightness(1.04);
+}
+
+.row-type-select {
+    width: var(--row-type-select-width);
+    min-width: var(--row-type-select-width);
+    max-width: var(--row-type-select-width);
+    justify-self: start;
 }
 
 .row-select:focus-visible {
@@ -1341,11 +1359,11 @@ select:focus-visible {
     }
 
     .row-item {
-        grid-template-columns: 44px minmax(120px, 1fr) 126px minmax(140px, 1fr) 82px;
+        grid-template-columns: 44px minmax(108px, 0.78fr) var(--row-type-select-width) minmax(168px, 1.22fr) 82px;
     }
 
     .row-item.row-type-ref {
-        grid-template-columns: 44px minmax(112px, 0.82fr) 108px minmax(200px, 1.5fr) 82px;
+        grid-template-columns: 44px minmax(108px, 0.78fr) var(--row-type-select-width) minmax(168px, 1.22fr) 82px;
     }
 }
 
@@ -1535,25 +1553,20 @@ select:focus-visible {
     }
 
     .row-item {
-        --mobile-type-col-width: 112px;
-        --mobile-row-gap: 8px;
-        grid-template-columns: 44px var(--mobile-type-col-width) minmax(0, 1fr) 84px;
+        grid-template-columns: 44px minmax(0, 1fr) 48px;
+        grid-template-areas:
+            "drag label actions"
+            "drag type actions"
+            "drag value actions";
         align-items: center;
         gap: 8px;
     }
 
-    .row-item.row-type-value {
-        grid-template-areas:
-            "drag label label actions"
-            "drag type . actions"
-            "drag value value actions";
-    }
-
     .row-item.row-type-ref {
+        grid-template-columns: 44px var(--row-type-select-width) minmax(0, 1fr) 48px;
         grid-template-areas:
             "drag label label actions"
-            "drag type value actions"
-            "drag . value actions";
+            "drag type value actions";
     }
 
     .row-item > :nth-child(1) {
@@ -1570,15 +1583,17 @@ select:focus-visible {
 
     .row-item > :nth-child(4) {
         grid-area: value;
+        align-self: stretch;
     }
 
     .row-item > :nth-child(5) {
         grid-area: actions;
     }
 
-    .ref-input-group,
-    .value-input-group {
-        grid-template-columns: minmax(0, 1fr) auto;
+    .row-item > :nth-child(2),
+    .row-item > :nth-child(3),
+    .row-item > :nth-child(4) {
+        min-width: 0;
     }
 
     .row-item.row-type-ref .ref-input-group {
@@ -1586,14 +1601,15 @@ select:focus-visible {
         gap: 8px;
     }
 
-    .row-item.row-type-ref .ref-amount {
-        width: calc(100% + var(--mobile-type-col-width) + var(--mobile-row-gap));
-        min-width: 0;
-        margin-left: calc(-1 * (var(--mobile-type-col-width) + var(--mobile-row-gap)));
+    .row-item.row-type-ref > :nth-child(3) {
+        align-self: start;
     }
 
-    .row-item.row-type-ref > :nth-child(4) {
-        align-self: stretch;
+    .row-item.row-type-ref .ref-amount {
+        width: calc(100% + var(--row-type-select-width) + 8px);
+        min-width: 0;
+        margin-left: calc(-1 * (var(--row-type-select-width) + 8px));
+        padding-right: var(--row-unit-reserve);
     }
 
     .ref-amount {
@@ -1602,12 +1618,12 @@ select:focus-visible {
     }
 
     .value-input-group .row-value-input {
-        padding-right: 52px;
+        padding-right: var(--row-unit-reserve);
     }
 
     .row-actions {
         flex-direction: column;
-        gap: 4px;
+        gap: 3px;
     }
 
     .row-tools {
