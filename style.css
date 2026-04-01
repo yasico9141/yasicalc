@@ -710,6 +710,102 @@ main::before {
     letter-spacing: 0.13em;
 }
 
+.sheet-total-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+}
+
+.sheet-total-summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: end;
+    gap: 12px;
+    min-width: 0;
+}
+
+.total-display-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.total-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: rgba(8, 20, 40, 0.86);
+}
+
+.total-mode-toggle button {
+    min-height: 34px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-text-soft);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.total-mode-toggle button:hover {
+    color: var(--color-text-strong);
+}
+
+.total-mode-toggle button.active {
+    background: linear-gradient(180deg, rgba(77, 168, 255, 0.3), rgba(21, 45, 85, 0.9));
+    color: var(--color-text-strong);
+    box-shadow: inset 0 0 0 1px rgba(177, 223, 255, 0.2);
+}
+
+.split-count-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background: rgba(9, 21, 43, 0.82);
+    color: var(--color-text-body);
+}
+
+.split-count-control.is-hidden {
+    display: none;
+}
+
+.split-count-control span {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-text-soft);
+    white-space: nowrap;
+}
+
+.split-count-control input {
+    width: 68px;
+    height: 30px;
+    padding: 0 8px;
+    text-align: center;
+    border-radius: 999px;
+    border: 1px solid rgba(117, 163, 222, 0.32);
+    background: rgba(7, 17, 35, 0.82);
+    font-family: var(--font-display);
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--color-text-strong);
+}
+
+.split-count-control input:focus {
+    border-color: rgba(144, 205, 255, 0.52);
+    background: rgba(10, 24, 47, 0.88);
+}
+
 .total-amount {
     font-family: var(--font-display);
     font-size: clamp(2.4rem, 5.4vw, 3.6rem);
@@ -719,11 +815,22 @@ main::before {
     letter-spacing: 0.04em;
     display: flex;
     align-items: baseline;
+    justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 10px;
+    row-gap: 4px;
+    min-width: 0;
+    text-align: right;
     text-shadow: 0 0 24px rgba(77, 168, 255, 0.14);
 }
 
-.total-amount span {
+.total-amount .total-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.total-amount .total-unit {
     font-family: var(--font-main);
     font-size: 0.34em;
     font-weight: 600;
@@ -749,6 +856,10 @@ main::before {
     border: 1px solid rgba(113, 147, 200, 0.34);
     background: linear-gradient(180deg, rgba(13, 30, 58, 0.94), rgba(10, 24, 47, 0.9));
     box-shadow: var(--shadow-soft);
+}
+
+.row-item.row-type-ref {
+    grid-template-columns: 44px minmax(160px, 0.9fr) 112px minmax(260px, 1.45fr) 86px;
 }
 
 .row-item:hover {
@@ -865,6 +976,14 @@ main::before {
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 8px;
     align-items: center;
+}
+
+.row-item.row-type-ref .ref-input-group {
+    grid-template-columns: minmax(0, 1.8fr) minmax(112px, 0.85fr);
+}
+
+.row-item.row-type-ref .ref-amount {
+    min-width: 112px;
 }
 
 .ref-amount {
@@ -1224,6 +1343,10 @@ select:focus-visible {
     .row-item {
         grid-template-columns: 44px minmax(120px, 1fr) 126px minmax(140px, 1fr) 82px;
     }
+
+    .row-item.row-type-ref {
+        grid-template-columns: 44px minmax(112px, 0.82fr) 108px minmax(200px, 1.5fr) 82px;
+    }
 }
 
 @media (max-width: 720px) {
@@ -1386,6 +1509,24 @@ select:focus-visible {
     .sheet-footer {
         flex-direction: row;
         align-items: flex-end;
+    }
+
+    .sheet-footer-under-title {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-3);
+    }
+
+    .sheet-total-summary {
+        gap: 10px;
+    }
+
+    .total-display-controls {
+        align-items: stretch;
+    }
+
+    .split-count-control {
+        align-self: flex-start;
     }
 
     .sheet-footer .total-amount {

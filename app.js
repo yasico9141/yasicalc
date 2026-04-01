@@ -21,6 +21,8 @@
                         {
                             id: 'sheet_1',
                             name: 'Sheet 1',
+                            totalViewMode: 'total',
+                            splitCount: 1,
                             rows: [
                                 { id: 'row_1', label: '項目 A', type: 'value', value: 0, refSheetId: null, operator: 1 },
                                 { id: 'row_2', label: '項目 B', type: 'value', value: 0, refSheetId: null, operator: 1 }
@@ -84,6 +86,8 @@
                         const normalizedSheet = {
                             id: sheet?.id || Utils.generateId(),
                             name: sheet?.name || `Sheet ${sheetIndex + 1}`,
+                            totalViewMode: sheet?.totalViewMode === 'perPerson' ? 'perPerson' : 'total',
+                            splitCount: this.normalizeSplitCount(sheet?.splitCount),
                             rows: Array.isArray(sheet?.rows) ? sheet.rows : []
                         };
 
@@ -142,6 +146,8 @@
                 return {
                     id: Utils.generateId(),
                     name,
+                    totalViewMode: 'total',
+                    splitCount: 1,
                     rows: [this.createDefaultRow('項目 A')]
                 };
             }
@@ -156,6 +162,10 @@
 
             getBook(bookId) {
                 return this.state.books.find((book) => book.id === bookId) || null;
+            }
+
+            getSheet(sheetId, bookId = this.state.activeBookId) {
+                return this.getBook(bookId)?.sheets.find((sheet) => sheet.id === sheetId) || null;
             }
 
             getActiveBook() {
@@ -248,6 +258,11 @@
 
             // --- Calculation Engine ---
 
+            normalizeSplitCount(value) {
+                const numeric = Number.parseInt(String(value ?? '').replace(/[^\d]/g, ''), 10);
+                return Number.isFinite(numeric) && numeric > 0 ? numeric : 1;
+            }
+
             calculateSheetTotal(sheetId, visited = new Set(), bookId = this.state.activeBookId) {
                 if (visited.has(sheetId)) {
                     return { value: 0, error: 'LOOP' };
@@ -285,6 +300,36 @@
 
                 visited.delete(sheetId);
                 return { value: total, error: hasError };
+            }
+
+            getSheetTotalViewMode(sheet) {
+                return sheet?.totalViewMode === 'perPerson' ? 'perPerson' : 'total';
+            }
+
+            getSheetTotalLabel(mode) {
+                return mode === 'perPerson' ? '一人当たり' : '合計';
+            }
+
+            getSheetTotalDisplayResult(sheetId, bookId = this.state.activeBookId) {
+                const sheet = this.getSheet(sheetId, bookId);
+                const mode = this.getSheetTotalViewMode(sheet);
+                const splitCount = this.normalizeSplitCount(sheet?.splitCount);
+                const totalRes = this.calculateSheetTotal(sheetId, new Set(), bookId);
+
+                if (totalRes.error || mode !== 'perPerson') {
+                    return {
+                        ...totalRes,
+                        mode,
+                        splitCount
+                    };
+                }
+
+                return {
+                    value: totalRes.value / splitCount,
+                    error: null,
+                    mode,
+                    splitCount
+                };
             }
 
             // --- Actions ---
@@ -365,6 +410,8 @@
                 const newSheet = {
                     id: newId,
                     name: `New Sheet`,
+                    totalViewMode: 'total',
+                    splitCount: 1,
                     rows: [
                         { id: Utils.generateId(), label: '新規項目', type: 'value', value: 0, refSheetId: null, operator: 1 }
                     ]
@@ -393,6 +440,8 @@
                 const newSheet = {
                     id: newSheetId,
                     name: `${sheetToDuplicate.name} (コピー)`,
+                    totalViewMode: this.getSheetTotalViewMode(sheetToDuplicate),
+                    splitCount: this.normalizeSplitCount(sheetToDuplicate.splitCount),
                     rows: newRows
                 };
 
@@ -451,6 +500,22 @@
                     sheet.name = newName;
                     this.saveAndRender();
                 }
+            }
+
+            updateSheetTotalViewMode(sheetId, mode) {
+                const sheet = this.getSheet(sheetId);
+                if (!sheet) return;
+
+                sheet.totalViewMode = mode === 'perPerson' ? 'perPerson' : 'total';
+                this.saveAndRender();
+            }
+
+            updateSheetSplitCount(sheetId, value) {
+                const sheet = this.getSheet(sheetId);
+                if (!sheet) return;
+
+                sheet.splitCount = this.normalizeSplitCount(value);
+                this.saveAndRender();
             }
 
             addRow(sheetId) {
@@ -626,21 +691,28 @@
                 this.refreshSheetTotalDisplay(sheetId);
             }
 
+            getAmountMarkup(value) {
+                return `
+                    <span class="total-value">${Utils.formatNumber(value)}</span>
+                    <span class="total-unit">${this.state.unit}</span>
+                `;
+            }
+
             getSheetTotalMarkup(totalRes) {
                 if (totalRes.error) {
                     return `
-                        <span class="text-error" style="font-size:1.5rem">循環参照</span>
-                        <span style="font-size:0.5em; color: var(--text-secondary);">${this.state.unit}</span>
+                        <span class="total-value text-error" style="font-size:1.5rem">循環参照</span>
+                        <span class="total-unit">${this.state.unit}</span>
                     `;
                 }
-                return `${Utils.formatNumber(totalRes.value)} <span style="font-size:0.5em; color: var(--text-secondary);">${this.state.unit}</span>`;
+                return this.getAmountMarkup(totalRes.value);
             }
 
             refreshSheetTotalDisplay(sheetId) {
                 if (this.state.view !== 'sheet' || this.state.activeSheetId !== sheetId) return;
                 const totalAmountEl = document.querySelector('.sheet-footer-under-title .total-amount');
                 if (!totalAmountEl) return;
-                const totalRes = this.calculateSheetTotal(sheetId);
+                const totalRes = this.getSheetTotalDisplayResult(sheetId);
                 totalAmountEl.innerHTML = this.getSheetTotalMarkup(totalRes);
             }
 
@@ -879,7 +951,7 @@
                             <div style="font-size: 0.85rem; color: var(--text-tertiary);">このブック内の合算</div>
                         </div>
                         <div class="total-amount">
-                            ${Utils.formatNumber(grandTotal)} <span style="font-size:0.5em; color: var(--text-secondary);">${this.state.unit}</span>
+                            ${this.getAmountMarkup(grandTotal)}
                         </div>
                     </div>
                 `;
@@ -1012,13 +1084,31 @@
                 rowsContainer.appendChild(addBtn);
 
                 // Footer
-                const totalRes = this.calculateSheetTotal(sheetId);
+                const totalMode = this.getSheetTotalViewMode(sheet);
+                const totalRes = this.getSheetTotalDisplayResult(sheetId);
+                const splitCount = this.normalizeSplitCount(sheet.splitCount);
                 const footer = document.createElement('div');
                 footer.className = 'sheet-footer sheet-footer-under-title';
                 footer.innerHTML = `
-                    <div class="total-label">合計</div>
-                    <div class="total-amount">
-                        ${this.getSheetTotalMarkup(totalRes)}
+                    <div class="sheet-total-meta">
+                        <div class="total-display-controls">
+                            <div class="total-mode-toggle" role="group" aria-label="合計表示の切り替え">
+                                <button type="button" class="${totalMode === 'total' ? 'active' : ''}" onclick="app.updateSheetTotalViewMode('${sheetId}', 'total')">合計</button>
+                                <button type="button" class="${totalMode === 'perPerson' ? 'active' : ''}" onclick="app.updateSheetTotalViewMode('${sheetId}', 'perPerson')">一人当たり</button>
+                            </div>
+                            <label class="split-count-control ${totalMode === 'perPerson' ? '' : 'is-hidden'}">
+                                <span>人数</span>
+                                <input type="number" inputmode="numeric" min="1" step="1" value="${splitCount}"
+                                    onchange="app.updateSheetSplitCount('${sheetId}', this.value)">
+                                <span>人</span>
+                            </label>
+                        </div>
+                        <div class="sheet-total-summary">
+                            <div class="total-label">${this.getSheetTotalLabel(totalMode)}</div>
+                            <div class="total-amount">
+                                ${this.getSheetTotalMarkup(totalRes)}
+                            </div>
+                        </div>
                     </div>
                 `;
                 container.appendChild(footer);
