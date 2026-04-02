@@ -222,10 +222,27 @@
             // --- Mobile Sidebar ---
 
             applySidebarState() {
-                document.body.classList.toggle('sidebar-open', this.sidebarOpen);
+                const isMobile = window.matchMedia('(max-width: 720px)').matches;
+                const shouldOpen = isMobile && this.sidebarOpen;
+                document.body.classList.toggle('sidebar-open', shouldOpen);
+
+                const sidebar = document.querySelector('.sheet-sidebar');
+                const backdrop = document.querySelector('.sidebar-backdrop');
+                if (sidebar) sidebar.classList.toggle('is-open', shouldOpen);
+                if (backdrop) backdrop.classList.toggle('is-open', shouldOpen);
+
+                if (!isMobile && this.sidebarOpen) {
+                    this.sidebarOpen = false;
+                }
             }
 
             toggleSidebar(force) {
+                if (!window.matchMedia('(max-width: 720px)').matches) {
+                    this.sidebarOpen = false;
+                    this.applySidebarState();
+                    return;
+                }
+
                 if (typeof force === 'boolean') {
                     this.sidebarOpen = force;
                 } else {

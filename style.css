@@ -498,7 +498,7 @@ main {
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base);
-    z-index: 35;
+    z-index: 60;
 }
 
 .sheet-sidebar {
@@ -2338,16 +2338,22 @@ select:focus-visible {
         width: min(84vw, 320px);
         border-radius: 0;
         transform: translateX(-108%);
+        visibility: hidden;
+        pointer-events: none;
         transition: transform var(--transition-base);
-        z-index: 40;
+        z-index: 70;
         padding: var(--space-4);
     }
 
-    body.sidebar-open .sheet-sidebar {
+    body.sidebar-open .sheet-sidebar,
+    .sheet-sidebar.is-open {
         transform: translateX(0);
+        visibility: visible;
+        pointer-events: auto;
     }
 
-    body.sidebar-open .sidebar-backdrop {
+    body.sidebar-open .sidebar-backdrop,
+    .sidebar-backdrop.is-open {
         opacity: 1;
         pointer-events: auto;
     }
