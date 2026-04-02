@@ -1,0 +1,14 @@
+{
+  "name": "yasicalc",
+  "short_name": "yasicalc",
+  "icons": [
+    {
+      "src": "assets/yasicalc_appicon.png",
+      "sizes": "627x627",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0a2d7a",
+  "background_color": "#0a2d7a",
+  "display": "standalone"
+}

@@ -5,10 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>yasicalc</title>
+    <link rel="icon" type="image/png" sizes="627x627" href="assets/yasicalc_appicon.png">
+    <link rel="apple-touch-icon" href="assets/yasicalc_appicon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#0a2d7a">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,9 +20,7 @@
 <body>
     <header class="app-header">
         <div class="logo">
-            <div class="logo-plate" aria-label="yasicalc">
-                <span class="logo-main">yasi</span><span class="logo-accent">calc</span>
-            </div>
+            <img src="assets/yasicalc_logo.png" alt="yasicalc" class="logo-image">
         </div>
 
         <div class="header-controls">
@@ -63,7 +65,7 @@
     </div>
 
     <div id="helpModal" class="modal-overlay" onclick="if(event.target===this) app.hideHelp()">
-        <div class="modal-content">
+        <div class="modal-content help-modal-theme">
             <button class="modal-close" onclick="app.hideHelp()">×</button>
             <h2 class="modal-title">yasicalc の使い方</h2>
 

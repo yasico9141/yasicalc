@@ -201,8 +201,8 @@
             adjustUnitInputWidth(value) {
                 const text = String(value || '').trim() || '円';
                 const isMobile = window.matchMedia('(max-width: 720px)').matches;
-                const minWidth = isMobile ? 72 : 64;
-                const width = Math.min(96, Math.max(minWidth, 24 + Array.from(text).length * 16));
+                const minWidth = isMobile ? 104 : 92;
+                const width = Math.min(isMobile ? 152 : 136, Math.max(minWidth, 30 + Array.from(text).length * 18));
                 const unitInput = document.getElementById('unitInput');
                 if (unitInput) {
                     unitInput.style.width = `${width}px`;
@@ -304,7 +304,13 @@
                         if (result.error) {
                             hasError = result.error;
                         } else {
-                            total += result.value * op;
+                            const refSheet = this.getSheet(row.refSheetId, bookId);
+                            const refMode = this.getSheetTotalViewMode(refSheet);
+                            const refSplitCount = this.normalizeSplitCount(refSheet?.splitCount);
+                            const refValue = refMode === 'perPerson'
+                                ? result.value / refSplitCount
+                                : result.value;
+                            total += refValue * op;
                         }
                     }
                 }
@@ -882,7 +888,7 @@
                         this.selectSheet(sheet.id);
                     };
 
-                    const total = this.calculateSheetTotal(sheet.id);
+                    const total = this.getSheetTotalDisplayResult(sheet.id);
                     const totalDisplay = total.error ? 'Err' : Utils.formatNumber(total.value);
 
                     li.innerHTML = `
@@ -945,7 +951,7 @@
                     html += `
                         <tr>
                             <td style="font-weight: 500;">${sheet.name}</td>
-                            <td style="text-align:right; font-weight: 600; font-family: var(--font-main);">
+                            <td class="summary-total-cell" style="text-align:right; font-weight: 600;">
                                 ${val} <span style="font-size:0.8em; color: var(--text-secondary)">${this.state.unit}</span>
                             </td>
                         </tr>
@@ -1028,7 +1034,7 @@
                         let refAmountHtml = `<div class="ref-amount is-empty">未選択 <span>${this.state.unit}</span></div>`;
 
                         if (row.refSheetId) {
-                            const refResult = this.calculateSheetTotal(row.refSheetId);
+                            const refResult = this.getSheetTotalDisplayResult(row.refSheetId);
                             if (refResult.error) {
                                 refAmountHtml = `<div class="ref-amount is-error">Err (${refResult.error})</div>`;
                             } else {
