@@ -62,12 +62,14 @@ body {
     font-family: var(--font-main);
     color: var(--color-text-strong);
     background:
-        radial-gradient(1100px 500px at 120% -10%, rgba(77, 168, 255, 0.12), transparent 70%),
-        radial-gradient(900px 420px at -10% 110%, rgba(40, 88, 160, 0.14), transparent 70%),
-        linear-gradient(160deg, var(--color-bg-base), var(--color-bg-deep) 65%);
+        radial-gradient(1400px 620px at 78% -12%, rgba(128, 244, 255, 0.72) 0%, rgba(76, 204, 255, 0.42) 28%, rgba(21, 135, 239, 0.12) 56%, transparent 72%),
+        radial-gradient(980px 520px at -8% 8%, rgba(85, 191, 255, 0.34), transparent 72%),
+        linear-gradient(180deg, #1aa3f0 0%, #1378dc 22%, #0b53c3 46%, #083ea8 65%, #07318f 82%, #062676 100%);
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: relative;
+    isolation: isolate;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -77,14 +79,62 @@ body::before {
     position: fixed;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(
-        115deg,
-        transparent 0%,
-        transparent 44%,
-        rgba(77, 168, 255, 0.03) 45%,
-        transparent 47%
-    );
+    background:
+        radial-gradient(80px 30px at 18% 36%, rgba(171, 248, 255, 0.62) 0 58%, transparent 60%),
+        radial-gradient(96px 34px at 28% 18%, rgba(171, 248, 255, 0.54) 0 57%, transparent 59%),
+        radial-gradient(118px 38px at 38% 34%, rgba(151, 239, 255, 0.48) 0 54%, transparent 56%),
+        radial-gradient(74px 26px at 52% 20%, rgba(160, 244, 255, 0.52) 0 57%, transparent 59%),
+        radial-gradient(122px 40px at 64% 30%, rgba(162, 245, 255, 0.58) 0 55%, transparent 57%),
+        radial-gradient(110px 36px at 78% 16%, rgba(162, 245, 255, 0.6) 0 58%, transparent 60%),
+        radial-gradient(96px 34px at 86% 30%, rgba(142, 237, 255, 0.52) 0 56%, transparent 58%),
+        radial-gradient(130px 44px at 94% 20%, rgba(164, 248, 255, 0.64) 0 54%, transparent 56%),
+        radial-gradient(108px 38px at 72% 42%, rgba(116, 221, 255, 0.44) 0 53%, transparent 55%),
+        linear-gradient(180deg, rgba(140, 239, 255, 0.25) 0%, rgba(82, 201, 255, 0.14) 28%, rgba(34, 124, 221, 0.06) 52%, transparent 72%);
+    opacity: 0.78;
+    filter: blur(1.2px);
+    transform: rotate(-8deg) scale(1.08);
+    animation: surfaceDrift 18s ease-in-out infinite alternate;
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(114deg, rgba(96, 255, 255, 0.46) 0%, rgba(96, 255, 255, 0.24) 6.5%, transparent 12%),
+        linear-gradient(136deg, transparent 0 29%, rgba(255, 94, 220, 0.74) 31% 70%, transparent 72%) -2% 46% / 148px 84px no-repeat,
+        linear-gradient(151deg, transparent 0 23%, rgba(255, 126, 236, 0.52) 25% 63%, transparent 65%) 10% 38% / 86px 128px no-repeat,
+        linear-gradient(124deg, transparent 0 30%, rgba(255, 96, 223, 0.72) 32% 70%, transparent 72%) 7% 55% / 94px 56px no-repeat,
+        linear-gradient(140deg, transparent 0 28%, rgba(255, 98, 224, 0.86) 30% 68%, transparent 70%) 15% 58% / 48px 34px no-repeat,
+        linear-gradient(130deg, transparent 0 28%, rgba(255, 90, 216, 0.8) 30% 74%, transparent 76%) 9% 68% / 64px 38px no-repeat,
+        linear-gradient(142deg, transparent 0 30%, rgba(255, 92, 218, 0.88) 32% 68%, transparent 70%) 22% 68% / 76px 56px no-repeat,
+        linear-gradient(128deg, transparent 0 26%, rgba(255, 84, 210, 0.84) 28% 72%, transparent 74%) 16% 72% / 58px 38px no-repeat,
+        linear-gradient(132deg, transparent 0 24%, rgba(255, 84, 210, 0.82) 26% 74%, transparent 76%) 9% 80% / 68px 96px no-repeat,
+        linear-gradient(126deg, transparent 0 24%, rgba(255, 84, 210, 0.76) 26% 72%, transparent 74%) 18% 86% / 78px 52px no-repeat,
+        linear-gradient(145deg, transparent 0 28%, rgba(255, 92, 218, 0.52) 30% 66%, transparent 68%) 6% 94% / 102px 64px no-repeat,
+        linear-gradient(132deg, transparent 0 30%, rgba(255, 96, 222, 0.6) 32% 68%, transparent 70%) 25% 92% / 64px 30px no-repeat,
+        linear-gradient(137deg, transparent 0 30%, rgba(255, 96, 222, 0.74) 32% 68%, transparent 70%) 13% 62% / 32px 18px no-repeat,
+        linear-gradient(128deg, transparent 0 27%, rgba(255, 102, 226, 0.68) 29% 71%, transparent 73%) 6% 74% / 24px 16px no-repeat,
+        linear-gradient(144deg, transparent 0 24%, rgba(255, 99, 224, 0.7) 26% 68%, transparent 70%) 21% 76% / 28px 20px no-repeat,
+        linear-gradient(130deg, transparent 0 26%, rgba(255, 90, 216, 0.66) 28% 70%, transparent 72%) 11% 88% / 34px 22px no-repeat,
+        linear-gradient(141deg, transparent 0 28%, rgba(255, 92, 218, 0.6) 30% 66%, transparent 68%) 23% 97% / 38px 20px no-repeat,
+        radial-gradient(188px 116px at 9% 76%, rgba(255, 112, 228, 0.16), transparent 72%),
+        radial-gradient(232px 142px at 12% 97%, rgba(255, 96, 222, 0.24), transparent 74%),
+        radial-gradient(960px 520px at 50% -10%, rgba(176, 244, 255, 0.22) 0%, rgba(176, 244, 255, 0.12) 28%, transparent 62%),
+        radial-gradient(1400px 700px at 50% 0%, rgba(255, 255, 255, 0.1), transparent 65%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(10, 42, 124, 0.12) 35%, rgba(4, 22, 84, 0.28) 68%, rgba(1, 10, 50, 0.46) 100%);
     z-index: -1;
+}
+
+@keyframes surfaceDrift {
+    from {
+        transform: rotate(-9deg) translate3d(-1.5%, 0, 0) scale(1.08);
+    }
+    to {
+        transform: rotate(-6deg) translate3d(1.5%, -1.5%, 0) scale(1.12);
+    }
 }
 
 button,
@@ -1368,10 +1418,59 @@ select:focus-visible {
 }
 
 @media (max-width: 720px) {
+    html {
+        background: #062676;
+    }
+
     body {
+        height: 100dvh;
+        min-height: 100dvh;
         overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow-y: hidden;
+        background:
+            radial-gradient(130% 55% at 50% -8%, rgba(167, 245, 255, 0.32) 0%, rgba(96, 210, 255, 0.2) 28%, rgba(16, 117, 214, 0.08) 52%, transparent 74%),
+            linear-gradient(180deg, #1aa3f0 0%, #1378dc 24%, #0b53c3 52%, #083ea8 74%, #072f8d 88%, #062676 100%);
+    }
+
+    body::before {
+        display: none;
+    }
+
+    body::after {
+        position: fixed;
+        inset: 0;
+        background:
+            linear-gradient(114deg, rgba(96, 255, 255, 0.46) 0%, rgba(96, 255, 255, 0.22) 7%, transparent 12%),
+            linear-gradient(136deg, transparent 0 29%, rgba(255, 94, 220, 0.86) 31% 70%, transparent 72%) -4% 46% / 170px 96px no-repeat,
+            linear-gradient(151deg, transparent 0 23%, rgba(255, 126, 236, 0.58) 25% 63%, transparent 65%) 11% 40% / 96px 142px no-repeat,
+            linear-gradient(124deg, transparent 0 30%, rgba(255, 96, 223, 0.82) 32% 70%, transparent 72%) 5% 61% / 104px 62px no-repeat,
+            linear-gradient(140deg, transparent 0 28%, rgba(255, 98, 224, 0.92) 30% 68%, transparent 70%) 16% 64% / 56px 40px no-repeat,
+            linear-gradient(130deg, transparent 0 28%, rgba(255, 90, 216, 0.86) 30% 74%, transparent 76%) 10% 75% / 74px 44px no-repeat,
+            linear-gradient(142deg, transparent 0 30%, rgba(255, 92, 218, 0.94) 32% 68%, transparent 70%) 25% 73% / 88px 62px no-repeat,
+            linear-gradient(128deg, transparent 0 26%, rgba(255, 84, 210, 0.9) 28% 72%, transparent 74%) 19% 79% / 68px 44px no-repeat,
+            linear-gradient(132deg, transparent 0 24%, rgba(255, 84, 210, 0.9) 26% 74%, transparent 76%) 9% 87% / 82px 112px no-repeat,
+            linear-gradient(126deg, transparent 0 24%, rgba(255, 84, 210, 0.84) 26% 72%, transparent 74%) 20% 93% / 88px 58px no-repeat,
+            linear-gradient(145deg, transparent 0 28%, rgba(255, 92, 218, 0.66) 30% 66%, transparent 68%) 7% 99% / 118px 74px no-repeat,
+            linear-gradient(132deg, transparent 0 30%, rgba(255, 96, 222, 0.78) 32% 68%, transparent 70%) 30% 97% / 72px 34px no-repeat,
+            linear-gradient(137deg, transparent 0 30%, rgba(255, 96, 222, 0.8) 32% 68%, transparent 70%) 13% 63% / 40px 22px no-repeat,
+            linear-gradient(128deg, transparent 0 27%, rgba(255, 102, 226, 0.74) 29% 71%, transparent 73%) 7% 75% / 30px 20px no-repeat,
+            linear-gradient(144deg, transparent 0 24%, rgba(255, 99, 224, 0.76) 26% 68%, transparent 70%) 21% 77% / 34px 24px no-repeat,
+            linear-gradient(130deg, transparent 0 26%, rgba(255, 90, 216, 0.7) 28% 70%, transparent 72%) 12% 89% / 42px 26px no-repeat,
+            linear-gradient(141deg, transparent 0 28%, rgba(255, 92, 218, 0.66) 30% 66%, transparent 68%) 24% 97% / 46px 24px no-repeat,
+            radial-gradient(200px 126px at 9% 82%, rgba(255, 112, 228, 0.22), transparent 72%),
+            radial-gradient(250px 154px at 12% 100%, rgba(255, 96, 222, 0.34), transparent 74%),
+            linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(12, 54, 150, 0.14) 42%, rgba(4, 22, 84, 0.3) 100%);
+        filter: saturate(1.2) brightness(1.05);
+    }
+
+    .app-header {
+        border-bottom: 1px solid rgba(123, 187, 255, 0.22);
+        background: linear-gradient(180deg, rgba(6, 22, 52, 0.94), rgba(5, 18, 44, 0.86));
+        backdrop-filter: blur(8px);
+    }
+
+    .app-header::after {
+        opacity: 0.38;
     }
 
     .app-header {
@@ -1450,7 +1549,10 @@ select:focus-visible {
 
     .main-container {
         display: block;
-        padding: var(--space-3);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        padding: 0 var(--space-3) calc(var(--space-3) + env(safe-area-inset-bottom));
     }
 
     .sheet-sidebar {
@@ -1497,6 +1599,7 @@ select:focus-visible {
         min-height: calc(100vh - 250px);
         min-height: calc(100dvh - 250px);
         padding: 16px;
+        background: linear-gradient(180deg, rgba(11, 25, 49, 0.86), rgba(8, 18, 35, 0.9));
     }
 
     .sheet-header {
