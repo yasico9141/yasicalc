@@ -962,6 +962,8 @@ main::before {
 }
 
 .total-label {
+    font-family: var(--font-total);
+    font-style: italic;
     font-size: 0.76rem;
     font-weight: 700;
     color: #d5ecff;
@@ -1105,7 +1107,8 @@ main::before {
 }
 
 .total-amount .total-unit {
-    font-family: var(--font-main);
+    font-family: var(--font-total);
+    font-style: italic;
     font-size: 0.34em;
     font-weight: 700;
     color: var(--color-motif-yellow);
@@ -1579,6 +1582,7 @@ main::before {
     padding: var(--space-4);
     background: var(--color-backdrop);
     backdrop-filter: blur(8px);
+    overflow-x: hidden;
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base);
@@ -1593,7 +1597,9 @@ main::before {
 .modal-content {
     position: relative;
     width: min(920px, 94vw);
+    max-width: 100%;
     max-height: 88vh;
+    overflow-x: hidden;
     overflow-y: auto;
     border: 1px solid var(--color-line);
     background: linear-gradient(100deg, rgba(24, 76, 154, 0.44) 0, rgba(8, 24, 49, 0.28) 58%),
@@ -1842,19 +1848,44 @@ main {
     background: linear-gradient(180deg, #173f8f 0%, #0d2f76 48%, #0a225a 100%) !important;
 }
 
-.total-mode-toggle,
-.split-count-control {
-    background: linear-gradient(180deg, #0f2d73, #081f56) !important;
+.total-mode-toggle {
+    border: 0 !important;
+    border-radius: 999px !important;
+    clip-path: none !important;
+    padding: 4px !important;
+    gap: 4px;
+    background: linear-gradient(180deg, #0a0f1c, #020611) !important;
+    box-shadow: inset 0 -2px 0 rgba(126, 180, 255, 0.22), 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .total-mode-toggle button {
-    color: #cfe7ff;
+    border: 0 !important;
+    border-radius: 999px !important;
+    clip-path: none !important;
+    min-height: 30px;
+    padding: 0 14px;
+    background: linear-gradient(180deg, #090f1b, #020611) !important;
+    color: #ffffff;
+    box-shadow: none !important;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.total-mode-toggle button:hover {
+    background: linear-gradient(180deg, #14233d, #071224) !important;
+    color: #ffffff;
 }
 
 .total-mode-toggle button.active {
-    background: linear-gradient(180deg, #3297ff, #1452b8) !important;
-    color: var(--tone-white);
-    box-shadow: inset 0 -3px 0 var(--tone-yellow);
+    background: linear-gradient(180deg, #43b4ff, #1a74de) !important;
+    color: #ffffff;
+    box-shadow: inset 0 -2px 0 rgba(194, 233, 255, 0.55), 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+}
+
+.split-count-control {
+    background: linear-gradient(180deg, #0f2d73, #081f56) !important;
 }
 
 .add-row-btn,
@@ -1951,18 +1982,72 @@ main {
 }
 
 .app-controls .btn-help {
-    background: linear-gradient(180deg, #ffffff, #dde7fb) !important;
-    color: #1a2a66 !important;
-    box-shadow: inset 0 -1px 0 rgba(22, 42, 102, 0.2), 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+    background: transparent !important;
+    color: #ffe34d !important;
+    box-shadow: none !important;
+}
+
+.app-controls .btn-help:hover {
+    background: rgba(255, 227, 77, 0.18) !important;
+    color: #fff3a7 !important;
 }
 
 .app-controls .btn-danger {
-    color: #ffe36a !important;
+    color: #ff5a3a !important;
 }
 
 .app-controls .btn-danger:hover {
-    background: rgba(255, 227, 77, 0.2) !important;
-    color: #fff2ba !important;
+    background: rgba(239, 75, 46, 0.2) !important;
+    color: #ffb19f !important;
+}
+
+.btn-danger {
+    color: #ff5a3a !important;
+    background: linear-gradient(180deg, #4c1f17, #2b130f) !important;
+    box-shadow: inset 0 -2px 0 rgba(255, 112, 86, 0.82);
+}
+
+.btn-danger:hover {
+    background: rgba(239, 75, 46, 0.24) !important;
+    color: #ffb19f !important;
+    box-shadow: inset 0 -2px 0 rgba(255, 136, 112, 0.9) !important;
+}
+
+.book-action-btn.danger {
+    color: #ff5a3a !important;
+    border-color: rgba(239, 75, 46, 0.62) !important;
+}
+
+.book-action-btn.danger:hover {
+    border-color: rgba(255, 136, 112, 0.9) !important;
+    background: rgba(239, 75, 46, 0.24) !important;
+    color: #ffbaa8 !important;
+}
+
+.sheet-actions button.btn-delete {
+    --content-edge-color: rgba(239, 75, 46, 0.72);
+    border-color: var(--content-edge-color) !important;
+    color: #ff5a3a !important;
+    box-shadow: inset 0 -2px 0 rgba(255, 136, 112, 0.84) !important;
+}
+
+.sheet-actions button.btn-delete::before {
+    background: linear-gradient(180deg, rgba(255, 126, 102, 0.86), rgba(239, 75, 46, 0.2)) !important;
+}
+
+.delete-row-btn {
+    --content-edge-color: rgba(239, 75, 46, 0.72);
+    border-color: var(--content-edge-color) !important;
+    color: #ff5a3a !important;
+}
+
+.sheet-actions button.btn-delete:hover,
+.delete-row-btn:hover {
+    --content-edge-color: rgba(255, 136, 112, 0.9);
+    border-color: var(--content-edge-color) !important;
+    background: rgba(239, 75, 46, 0.24) !important;
+    color: #ffbaa8 !important;
+    box-shadow: inset 0 -2px 0 rgba(255, 136, 112, 0.9) !important;
 }
 
 .unit-config {
@@ -2003,7 +2088,9 @@ main {
 #helpModal .help-modal-theme {
     position: relative;
     width: min(940px, 94vw);
+    max-width: 100%;
     max-height: 88vh;
+    overflow-x: hidden;
     overflow-y: auto;
     padding: 28px 24px 22px;
     border: 0 !important;

@@ -1152,7 +1152,7 @@
                         <div class="total-display-controls">
                             <div class="total-mode-toggle" role="group" aria-label="合計表示の切り替え">
                                 <button type="button" class="${totalMode === 'total' ? 'active' : ''}" onclick="app.updateSheetTotalViewMode('${sheetId}', 'total')">合計</button>
-                                <button type="button" class="${totalMode === 'perPerson' ? 'active' : ''}" onclick="app.updateSheetTotalViewMode('${sheetId}', 'perPerson')">一人当たり</button>
+                                <button type="button" class="${totalMode === 'perPerson' ? 'active' : ''}" onclick="app.updateSheetTotalViewMode('${sheetId}', 'perPerson')">割り勘</button>
                             </div>
                             <label class="split-count-control ${totalMode === 'perPerson' ? '' : 'is-hidden'}">
                                 <span>人数</span>
