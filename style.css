@@ -1,4 +1,5 @@
 :root {
+    --app-header-height: 78px;
     --color-bg-base: #050b19;
     --color-bg-deep: #020611;
     --color-panel-1: #0a1830;
@@ -83,6 +84,7 @@ body {
         linear-gradient(180deg, #1aa3f0 0%, #1378dc 22%, #0b53c3 46%, #083ea8 65%, #07318f 82%, #062676 100%);
     display: flex;
     flex-direction: column;
+    padding-top: var(--app-header-height);
     overflow: hidden;
     position: relative;
     isolation: isolate;
@@ -223,8 +225,11 @@ select {
     border-bottom: 1px solid var(--color-line);
     background: linear-gradient(180deg, rgba(8, 17, 34, 0.92), rgba(7, 15, 29, 0.78));
     backdrop-filter: blur(4px);
-    position: relative;
-    z-index: 20;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
 }
 
 .app-header::after {
@@ -1352,12 +1357,24 @@ main::before {
 }
 
 .row-select {
-    appearance: auto;
-    -webkit-appearance: menulist;
-    padding-right: 12px;
-    background-image: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding-right: 34px;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #d9efff 50%),
+        linear-gradient(135deg, #d9efff 50%, transparent 50%);
+    background-position:
+        calc(100% - 16px) calc(50% - 2px),
+        calc(100% - 10px) calc(50% - 2px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
     opacity: 0.94;
     transition: opacity 0.12s ease, filter 0.12s ease;
+}
+
+.row-select::-ms-expand {
+    display: none;
 }
 
 .row-select:hover,
@@ -1756,13 +1773,26 @@ main {
 
 .book-select,
 .row-input,
-.row-select,
 .ref-amount,
 .sheet-title-input,
 .split-count-control input {
     background: var(--tone-black) !important;
     color: var(--tone-white);
     box-shadow: inset 0 -2px 0 rgba(77, 228, 255, 0.36);
+}
+
+.row-select {
+    background-color: var(--tone-black) !important;
+    color: var(--tone-white);
+    box-shadow: inset 0 -2px 0 rgba(77, 228, 255, 0.36);
+    background-image:
+        linear-gradient(45deg, transparent 50%, #d9efff 50%),
+        linear-gradient(135deg, #d9efff 50%, transparent 50%) !important;
+    background-position:
+        calc(100% - 16px) calc(50% - 2px),
+        calc(100% - 10px) calc(50% - 2px) !important;
+    background-size: 6px 6px, 6px 6px !important;
+    background-repeat: no-repeat !important;
 }
 
 .sheet-item {
@@ -2244,11 +2274,11 @@ select:focus-visible {
     }
 
     .app-header {
-        position: sticky;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
-        z-index: 30;
+        z-index: 80;
         padding-top: calc(var(--space-4) + env(safe-area-inset-top));
     }
 

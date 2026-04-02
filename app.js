@@ -181,10 +181,12 @@
                 const unitInput = document.getElementById('unitInput');
                 unitInput.value = this.state.unit;
                 this.adjustUnitInputWidth(this.state.unit);
+                this.syncHeaderHeight();
                 unitInput.addEventListener('input', (e) => {
                     this.state.unit = e.target.value;
                     this.adjustUnitInputWidth(e.target.value);
                     this.saveAndRender();
+                    this.syncHeaderHeight();
                 });
 
                 this.applySidebarState();
@@ -193,9 +195,21 @@
                         this.toggleSidebar(false);
                     }
                     this.adjustUnitInputWidth(unitInput.value);
+                    this.syncHeaderHeight();
                 });
 
                 this.render();
+                this.syncHeaderHeight();
+                requestAnimationFrame(() => this.syncHeaderHeight());
+            }
+
+            syncHeaderHeight() {
+                const header = document.querySelector('.app-header');
+                if (!header) return;
+                const height = Math.ceil(header.getBoundingClientRect().height);
+                if (height > 0) {
+                    document.documentElement.style.setProperty('--app-header-height', `${height}px`);
+                }
             }
 
             adjustUnitInputWidth(value) {
@@ -586,10 +600,19 @@
 
             deleteRow(sheetId, rowId) {
                 const sheet = this.getActiveSheets().find(s => s.id === sheetId);
-                if (sheet) {
-                    sheet.rows = sheet.rows.filter(r => r.id !== rowId);
-                    this.saveAndRender();
-                }
+                if (!sheet) return;
+
+                const row = sheet.rows.find(r => r.id === rowId);
+                if (!row) return;
+
+                const rowName = String(row.label || '').trim();
+                const message = rowName
+                    ? `「${rowName}」を削除してもよろしいですか？`
+                    : 'この項目を削除してもよろしいですか？';
+                if (!confirm(message)) return;
+
+                sheet.rows = sheet.rows.filter(r => r.id !== rowId);
+                this.saveAndRender();
             }
 
             updateRow(sheetId, rowId, field, value) {
