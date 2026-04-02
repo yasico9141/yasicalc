@@ -498,7 +498,7 @@ main {
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-base);
-    z-index: 60;
+    z-index: 90;
 }
 
 .sheet-sidebar {
@@ -2194,7 +2194,9 @@ select:focus-visible {
         height: 100dvh;
         min-height: 100dvh;
         overflow-x: hidden;
-        overflow-y: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
         background:
             radial-gradient(130% 55% at 50% -8%, rgba(167, 245, 255, 0.32) 0%, rgba(96, 210, 255, 0.2) 28%, rgba(16, 117, 214, 0.08) 52%, transparent 74%),
             linear-gradient(180deg, #1aa3f0 0%, #1378dc 24%, #0b53c3 52%, #083ea8 74%, #072f8d 88%, #062676 100%);
@@ -2250,6 +2252,7 @@ select:focus-visible {
         padding-top: calc(var(--space-4) + env(safe-area-inset-top));
     }
 
+    html.sidebar-open,
     body.sidebar-open {
         overflow: hidden;
     }
@@ -2324,9 +2327,7 @@ select:focus-visible {
 
     .main-container {
         display: block;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-y: contain;
+        overflow: visible;
         padding: 0 var(--space-3) calc(var(--space-3) + env(safe-area-inset-bottom));
     }
 
@@ -2336,13 +2337,20 @@ select:focus-visible {
         left: 0;
         bottom: 0;
         width: min(84vw, 320px);
+        height: 100dvh;
+        max-height: 100dvh;
         border-radius: 0;
         transform: translateX(-108%);
         visibility: hidden;
         pointer-events: none;
         transition: transform var(--transition-base);
-        z-index: 70;
-        padding: var(--space-4);
+        z-index: 100;
+        padding: calc(var(--space-4) + env(safe-area-inset-top)) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        touch-action: pan-y;
+        will-change: transform;
     }
 
     body.sidebar-open .sheet-sidebar,
@@ -2363,8 +2371,7 @@ select:focus-visible {
     }
 
     .sheet-list {
-        max-height: calc(100vh - 290px);
-        max-height: calc(100dvh - 290px);
+        max-height: none;
     }
 
     .book-controls {

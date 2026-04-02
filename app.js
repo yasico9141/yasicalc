@@ -225,6 +225,7 @@
                 const isMobile = window.matchMedia('(max-width: 720px)').matches;
                 const shouldOpen = isMobile && this.sidebarOpen;
                 document.body.classList.toggle('sidebar-open', shouldOpen);
+                document.documentElement.classList.toggle('sidebar-open', shouldOpen);
 
                 const sidebar = document.querySelector('.sheet-sidebar');
                 const backdrop = document.querySelector('.sidebar-backdrop');
