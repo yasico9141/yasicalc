@@ -3,8 +3,8 @@
   "short_name": "yasicalc",
   "icons": [
     {
-      "src": "assets/yasicalc_appicon.png",
-      "sizes": "627x627",
+      "src": "assets/yasicalc_icon.png",
+      "sizes": "1254x1254",
       "type": "image/png"
     }
   ],
