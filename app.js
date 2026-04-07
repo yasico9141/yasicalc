@@ -1091,7 +1091,7 @@
 
                         inputHtml = `
                             <div class="ref-input-group">
-                                <select class="row-select w-full" onchange="app.updateRow('${sheetId}', '${row.id}', 'refSheetId', this.value)">
+                                <select class="row-select w-full ref-sheet-select" onchange="app.updateRow('${sheetId}', '${row.id}', 'refSheetId', this.value)">
                                     <option value="">-- 選択 --</option>
                                     ${options}
                                 </select>
@@ -1101,12 +1101,12 @@
                     }
 
                     const operatorBtnStyle = op === 1
-                        ? 'color: var(--success); font-weight:700;'
-                        : 'color: var(--error); font-weight:700;';
+                        ? 'color: var(--success); font-weight:800; font-style:normal; font-size:1.2rem; line-height:1; display:inline-block; width:1em; text-align:center;'
+                        : 'color: var(--error); font-weight:800; font-style:normal; font-size:1.2rem; line-height:1; display:inline-block; width:1em; text-align:center;';
 
                     rowEl.innerHTML = `
                         <div class="row-drag-handle" onclick="app.toggleOperator('${sheetId}', '${row.id}')">
-                            <span style="${operatorBtnStyle}">${op === 1 ? '＋' : '－'}</span>
+                            <span style="${operatorBtnStyle}">${op === 1 ? '+' : '−'}</span>
                         </div>
                         <input type="text" class="row-input" style="font-weight:500;" placeholder="項目名" value="${row.label}"
                             onchange="app.updateRow('${sheetId}', '${row.id}', 'label', this.value)">

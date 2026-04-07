@@ -44,15 +44,22 @@
     <div class="main-container">
         <aside class="sheet-sidebar">
             <div class="book-switcher">
-                <div class="book-list-header">Books</div>
+                <div class="book-list-header">■BOOKS</div>
                 <div class="book-controls">
                     <select id="bookSelect" class="book-select" onchange="app.selectBook(this.value)"></select>
-                    <button class="book-action-btn" onclick="app.addBook()" title="ブック追加" aria-label="ブック追加">＋</button>
-                    <button class="book-action-btn rename" id="renameBookBtn" onclick="app.renameBook()" title="ブック名編集" aria-label="ブック名編集">✎</button>
-                    <button class="book-action-btn danger" id="deleteBookBtn" onclick="app.deleteBook()" title="ブック削除" aria-label="ブック削除">－</button>
+                    <div class="book-actions-row">
+                        <button class="book-action-btn" onclick="app.addBook()" title="ブック追加" aria-label="ブック追加">＋</button>
+                        <button class="book-action-btn rename" id="renameBookBtn" onclick="app.renameBook()" title="ブック名編集" aria-label="ブック名編集">✎</button>
+                        <button class="book-action-btn danger" id="deleteBookBtn" onclick="app.deleteBook()" title="ブック削除" aria-label="ブック削除">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="sheet-list-header">Sheets</div>
+            <div class="sheet-list-header">■SHEETS</div>
             <ul class="sheet-list" id="sheetList"></ul>
             <button class="add-sheet-btn" onclick="app.addSheet()">+ Add New Sheet</button>
             <div class="sidebar-spacer"></div>

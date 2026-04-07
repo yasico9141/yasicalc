@@ -1,3 +1,11 @@
+﻿@font-face {
+    font-family: "OshidashiMGothic";
+    src: url("assets/fonts/Oshidashi-M-Gothic-TT.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --app-header-height: 78px;
     --color-bg-base: #050b19;
@@ -45,8 +53,8 @@
     --row-unit-reserve: 58px;
     --transition-fast: 0.14s ease;
     --transition-base: 0.2s ease;
-    --font-main: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif;
-    --font-display: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif;
+    --font-main: "OshidashiMGothic", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+    --font-display: "OshidashiMGothic", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
     --font-total: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
     --tone-white: #f6fbff;
     --tone-black: #020611;
@@ -203,7 +211,7 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(5, 12, 24, 0.28);
+    background: #081632;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -213,6 +221,10 @@ select {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(123, 187, 255, 0.44);
+}
+
+* {
+    scrollbar-color: rgba(115, 151, 201, 0.32) #081632;
 }
 
 .app-header {
@@ -537,10 +549,16 @@ main {
 }
 
 .book-controls {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 38px 38px 38px;
+    display: flex;
+    flex-direction: column;
     gap: var(--space-2);
     min-width: 0;
+}
+
+.book-actions-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .book-select {
@@ -2233,6 +2251,45 @@ main {
     color: #ff4d66;
 }
 
+/* Rectangle content override */
+.sheet-sidebar,
+main,
+.book-switcher,
+.book-select,
+.book-action-btn,
+.sheet-item,
+.add-sheet-btn,
+.summary-tab-btn,
+.sheet-header,
+.sheet-title-input,
+.sheet-actions button,
+.total-mode-toggle,
+.total-mode-toggle button,
+.split-count-control,
+.split-count-control input,
+.row-item,
+.row-drag-handle,
+.row-input,
+.row-select,
+.ref-amount,
+.action-row-btn,
+.delete-row-btn,
+.add-row-btn,
+.summary-table-container,
+.modal-content,
+.modal-close,
+.help-section {
+    clip-path: none !important;
+    border-radius: 0 !important;
+}
+
+.book-action-btn::after,
+.sheet-header::before,
+.sheet-actions button::before,
+.row-item::after {
+    content: none !important;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
@@ -2492,7 +2549,15 @@ select:focus-visible {
     }
 
     .book-controls {
-        grid-template-columns: minmax(0, 1fr) var(--tap-min) var(--tap-min) var(--tap-min);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+
+    .book-actions-row {
+        display: grid;
+        grid-template-columns: var(--tap-min) var(--tap-min) var(--tap-min);
+        gap: var(--space-2);
     }
 
     .book-select,
@@ -2695,3 +2760,725 @@ select:focus-visible {
         scroll-behavior: auto !important;
     }
 }
+
+/* Flat content style: remove gradients/shading except page background */
+.app-header,
+.sheet-sidebar,
+main,
+.book-switcher,
+.book-select,
+.book-action-btn,
+.sheet-item,
+.add-sheet-btn,
+.summary-tab-btn,
+.sheet-header,
+.sheet-title-input,
+.sheet-actions button,
+.total-mode-toggle,
+.total-mode-toggle button,
+.split-count-control,
+.split-count-control input,
+.row-item,
+.row-drag-handle,
+.row-input,
+.row-select,
+.ref-amount,
+.action-row-btn,
+.delete-row-btn,
+.add-row-btn,
+.summary-table-container,
+.summary-table th,
+.summary-table td,
+.modal-content,
+.modal-close,
+.help-section,
+#helpModal .help-modal-theme,
+.app-controls,
+.app-controls button,
+.btn-menu,
+.unit-config,
+.unit-config input,
+.btn-danger {
+    background-image: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+
+.app-header::after,
+main::before,
+.sheet-item::before,
+.sheet-item::after,
+.sheet-header::before,
+.sheet-actions button::before,
+.book-action-btn::after,
+.row-item::before,
+.row-item::after,
+.modal-content::before {
+    content: none !important;
+}
+
+.app-header,
+.sheet-sidebar,
+main,
+.summary-table-container,
+.modal-content,
+#helpModal .help-modal-theme {
+    background-color: #0a255f !important;
+}
+
+.sheet-item,
+.sheet-header,
+.row-item,
+.help-section,
+.book-switcher,
+.add-sheet-btn,
+.summary-tab-btn {
+    background-color: #0f2d73 !important;
+}
+
+.btn-menu,
+.app-controls,
+.app-controls button,
+.unit-config,
+.book-action-btn,
+.sheet-actions button,
+.total-mode-toggle,
+.total-mode-toggle button,
+.split-count-control,
+.row-drag-handle,
+.action-row-btn,
+.delete-row-btn,
+.add-row-btn {
+    background-color: #102a64 !important;
+}
+
+.unit-config input,
+.split-count-control input,
+.book-select,
+.row-input,
+.row-select,
+.ref-amount,
+.sheet-title-input {
+    background-color: #081632 !important;
+}
+
+.summary-table th {
+    background-color: #1b4ea8 !important;
+}
+
+.summary-table td,
+.summary-table tbody tr:nth-child(odd) td,
+.summary-table tbody tr:nth-child(even) td {
+    background-color: #0a1e49 !important;
+}
+
+.book-select,
+.row-select {
+    appearance: auto !important;
+    -webkit-appearance: menulist !important;
+    -moz-appearance: menulist !important;
+    background-image: none !important;
+    padding-right: 12px !important;
+}
+
+/* Sheet item containers: white outside, dark input fields */
+.row-item {
+    background-color: #ffffff !important;
+}
+
+.row-item .row-input,
+.row-item .row-select,
+.row-item .ref-amount {
+    background-color: #081632 !important;
+    color: #f1f8ff !important;
+}
+
+.row-item .row-input::placeholder {
+    color: #8eb0dd !important;
+}
+
+.row-item .ref-amount span,
+.row-item .value-unit-inline {
+    color: #ffffff !important;
+}
+
+.row-item .row-value-input.is-minus {
+    color: #ffd59b !important;
+    border-color: rgba(255, 186, 88, 0.48) !important;
+    background-color: #081632 !important;
+}
+
+.row-item .row-value-input.is-minus:hover,
+.row-item .row-value-input.is-minus:focus {
+    background-color: #081632 !important;
+}
+
+.row-item .ref-amount.is-minus {
+    color: #ffd59b !important;
+    background-color: #081632 !important;
+}
+
+.row-item .ref-amount.is-error {
+    color: #ffc8d3 !important;
+    border-color: rgba(255, 111, 135, 0.5) !important;
+    background-color: rgba(58, 21, 33, 0.52) !important;
+}
+
+.row-item .ref-amount.is-empty {
+    color: var(--color-text-soft) !important;
+}
+
+.row-item .row-select option,
+.row-item .row-select optgroup {
+    background: #0a1c36 !important;
+    color: var(--color-text-strong) !important;
+}
+
+/* Row top accent line */
+.row-item {
+    border-top: 5px solid #00bfff !important;
+}
+
+/* Item label input colors */
+.row-item > .row-input {
+    background-color: #00bfff !important;
+    color: #ffffff !important;
+}
+
+.row-item > .row-input::placeholder {
+    color: #191970 !important;
+}
+
+/* Pill shape for type toggle and amount input */
+.row-item .row-type-select,
+.row-item .row-value-input {
+    clip-path: none !important;
+    border-radius: 999px !important;
+}
+
+/* Pill shape for reference mode fields */
+.row-item.row-type-ref .ref-input-group .row-select,
+.row-item.row-type-ref .ref-input-group .ref-amount {
+    clip-path: none !important;
+    border-radius: 999px !important;
+}
+
+/* Stretch +/- toggle vertically to fill row-item */
+.row-item .row-drag-handle {
+    align-self: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-top: -11px;
+    margin-bottom: -11px;
+    margin-left: -12px;
+    clip-path: polygon(0 0, 100% 0, calc(100% - 5px) 100%, 0 100%) !important;
+    border-radius: 0 !important;
+}
+
+.row-item .row-drag-handle,
+.row-item .row-drag-handle:hover,
+.row-item .row-drag-handle:active {
+    background-color: #081632 !important;
+}
+
+.row-item .row-drag-handle span {
+    display: inline-block;
+    transform: translateX(-2px);
+}
+
+/* Row action buttons: transparent background */
+.row-item .action-row-btn,
+.row-item .delete-row-btn,
+.row-item .action-row-btn:hover,
+.row-item .delete-row-btn:hover,
+.row-item .action-row-btn:active,
+.row-item .delete-row-btn:active {
+    background: transparent !important;
+}
+
+/* Row action icons: white and visible on white row background */
+.row-item .action-row-btn,
+.row-item .action-row-btn:active,
+.row-item .delete-row-btn,
+.row-item .delete-row-btn:active {
+    color: #ffffff !important;
+    text-shadow: 0 0 1px rgba(8, 22, 50, 0.95), 0 1px 2px rgba(8, 22, 50, 0.7) !important;
+}
+
+.row-item .delete-row-btn:hover {
+    color: #ff4d66 !important;
+    text-shadow: 0 0 1px rgba(45, 10, 18, 0.95), 0 1px 2px rgba(45, 10, 18, 0.7) !important;
+}
+
+.row-item .action-row-btn:hover {
+    color: #00bfff !important;
+}
+
+.row-item .action-row-btn:hover,
+.row-item .delete-row-btn:hover {
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+.row-item .action-row-btn svg,
+.row-item .delete-row-btn svg {
+    filter: drop-shadow(0 0 1px rgba(8, 22, 50, 0.95)) drop-shadow(0 1px 2px rgba(8, 22, 50, 0.7)) !important;
+}
+
+.row-item.row-type-ref .ref-input-group .ref-sheet-select {
+    color: #ffe34d !important;
+}
+
+/* Text input fields: pure black background */
+.row-item .row-input,
+.sheet-title-input,
+.unit-config input,
+.split-count-control input,
+input[type="text"],
+input[type="number"] {
+    background-color: #000000 !important;
+    color: #f1f8ff !important;
+}
+
+.row-item .row-input::placeholder,
+.sheet-title-input::placeholder,
+.unit-config input::placeholder,
+input[type="text"]::placeholder,
+input[type="number"]::placeholder {
+    color: #8eb0dd !important;
+}
+
+/* Reference row controls: same black background */
+.row-item .row-type-select,
+.row-item.row-type-ref .ref-input-group .row-select,
+.row-item .ref-amount,
+.row-item .ref-amount.is-minus,
+.row-item .ref-amount.is-error,
+.row-item .ref-amount.is-empty {
+    background-color: #000000 !important;
+}
+
+/* Keep amount text weight consistent between value/ref modes */
+.row-item .row-value-input,
+.row-item .ref-amount {
+    font-weight: 600 !important;
+}
+
+/* Row item: paint left ~30% blue */
+.row-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.row-item::before {
+    content: "" !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 30%;
+    background-color: #0b53c3 !important;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.row-item > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Add-row button: navy background + blue label */
+.add-row-btn,
+.add-row-btn:hover,
+.add-row-btn:active {
+    background-color: #081632 !important;
+    color: #00bfff !important;
+    border-top: 0 !important;
+}
+
+/* Total/Per-person toggle: pill shape with black background */
+.total-mode-toggle {
+    border-radius: 999px !important;
+    clip-path: none !important;
+    background-color: #000000 !important;
+    background-image: none !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.total-mode-toggle button {
+    border-radius: 999px !important;
+    clip-path: none !important;
+    background: #000000 !important;
+    color: #f1f8ff !important;
+    font-size: 0.84rem !important;
+}
+
+.total-mode-toggle button:hover,
+.total-mode-toggle button:active {
+    background: #000000 !important;
+    color: #ffffff !important;
+}
+
+.total-mode-toggle button.active {
+    background: #ffffff !important;
+    color: #081632 !important;
+    box-shadow: none !important;
+}
+
+/* Total/per-person amount: yellow value text */
+.total-amount .total-value:not(.text-error) {
+    color: #ffe34d !important;
+}
+
+.total-amount .total-unit {
+    font-size: 0.48em !important;
+}
+
+.sheet-total-summary .total-label {
+    font-size: 1rem !important;
+    line-height: 1.1;
+}
+
+/* Split-count pill ("人数○人"): white background */
+.split-count-control {
+    background: #ffffff !important;
+    color: #081632 !important;
+    position: relative;
+    overflow: hidden;
+    padding-left: 20px !important;
+}
+
+.split-count-control::before {
+    content: "" !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    background: #081632 !important;
+    clip-path: polygon(0 0, 100% 0, 52% 100%, 0 100%);
+    pointer-events: none;
+}
+
+.split-count-control > * {
+    position: relative;
+    z-index: 1;
+}
+
+.split-count-control span {
+    color: #081632 !important;
+}
+
+.split-count-control > span:first-child {
+    color: #ffffff !important;
+}
+
+/* Sheet title background: left 40% white with slanted edge */
+.sheet-header.sheet-header-tight {
+    background: #0b53c3 !important;
+    border-top: 5px solid #ff4d66 !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.sheet-header.sheet-header-tight::before {
+    content: "" !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    background: #ffffff !important;
+    clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sheet-header.sheet-header-tight > * {
+    position: relative;
+    z-index: 1;
+}
+
+.sheet-header.sheet-header-tight .sheet-title-input,
+.sheet-header.sheet-header-tight .sheet-title-input:hover,
+.sheet-header.sheet-header-tight .sheet-title-input:focus {
+    width: min(100%, 430px) !important;
+    max-width: 430px !important;
+    min-width: 0 !important;
+    background: #000000 !important;
+    background-color: #000000 !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    color: #f1f8ff !important;
+}
+
+.sheet-header.sheet-header-tight .sheet-title-input::placeholder {
+    color: #8eb0dd !important;
+}
+
+/* Sheet header action buttons: match row-item action button design */
+.sheet-actions button,
+.sheet-actions button:hover,
+.sheet-actions button:active {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+.sheet-actions button,
+.sheet-actions button:active {
+    color: #ffffff !important;
+    text-shadow: 0 0 1px rgba(8, 22, 50, 0.95), 0 1px 2px rgba(8, 22, 50, 0.7) !important;
+}
+
+.sheet-actions button.btn-delete,
+.sheet-actions button.btn-delete:active {
+    color: #ffffff !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.sheet-actions button.btn-delete::before {
+    background: none !important;
+}
+
+.sheet-actions button.btn-delete,
+.sheet-actions button.btn-delete:hover,
+.sheet-actions button.btn-delete:active,
+.sheet-actions button.btn-delete:focus {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+.sheet-actions button.btn-delete::before,
+.sheet-actions button.btn-delete::after {
+    content: none !important;
+    display: none !important;
+}
+
+.sheet-actions button:not(.btn-delete):hover {
+    color: #00bfff !important;
+    text-shadow: 0 0 1px rgba(8, 22, 50, 0.95), 0 1px 2px rgba(8, 22, 50, 0.7) !important;
+}
+
+.sheet-actions button.btn-delete:hover {
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #ff4d66 !important;
+    text-shadow: 0 0 1px rgba(45, 10, 18, 0.95), 0 1px 2px rgba(45, 10, 18, 0.7) !important;
+}
+
+.sheet-actions button svg {
+    filter: drop-shadow(0 0 1px rgba(8, 22, 50, 0.95)) drop-shadow(0 1px 2px rgba(8, 22, 50, 0.7)) !important;
+}
+
+/* Unit area: white background */
+.unit-config {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border-color: rgba(8, 22, 50, 0.28) !important;
+    box-shadow: none !important;
+}
+
+.unit-config span {
+    color: #081632 !important;
+}
+
+.unit-config input,
+#unitInput {
+    background: #000000 !important;
+    background-color: #000000 !important;
+    background-image: none !important;
+    color: #f1f8ff !important;
+    border-color: rgba(8, 22, 50, 0.32) !important;
+}
+
+/* BOOK action buttons: match other duplicate/delete button style */
+.book-actions-row .book-action-btn,
+.book-actions-row .book-action-btn:hover,
+.book-actions-row .book-action-btn:active,
+.book-actions-row .book-action-btn:focus {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+
+.book-actions-row .book-action-btn,
+.book-actions-row .book-action-btn:active {
+    color: #ffffff !important;
+    text-shadow: 0 0 1px rgba(8, 22, 50, 0.95), 0 1px 2px rgba(8, 22, 50, 0.7) !important;
+}
+
+.book-actions-row .book-action-btn::after {
+    content: none !important;
+    display: none !important;
+}
+
+.book-actions-row .book-action-btn:not(.danger):hover {
+    color: #00bfff !important;
+    text-shadow: 0 0 1px rgba(8, 22, 50, 0.95), 0 1px 2px rgba(8, 22, 50, 0.7) !important;
+}
+
+.book-actions-row .book-action-btn.danger:hover {
+    color: #ff4d66 !important;
+    text-shadow: 0 0 1px rgba(45, 10, 18, 0.95), 0 1px 2px rgba(45, 10, 18, 0.7) !important;
+}
+
+.book-actions-row .book-action-btn:disabled,
+.book-actions-row .book-action-btn:disabled:hover {
+    color: #8eb0dd !important;
+    text-shadow: none !important;
+    opacity: 0.45 !important;
+}
+
+/* Active sidebar sheet: match row-item style with red accent */
+.sheet-item.active {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    border-top: 5px solid #ff4d66 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    color: #081632 !important;
+}
+
+.sheet-item.active::before {
+    content: "" !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    background: #0b53c3 !important;
+    clip-path: polygon(0 0, 100% 0, 52% 100%, 0 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sheet-item.active::after {
+    content: none !important;
+    display: none !important;
+}
+
+.sheet-item.active > * {
+    position: relative;
+    z-index: 1;
+}
+
+.sheet-item.active .sheet-name {
+    color: #ffffff !important;
+}
+
+.sheet-item.active .sheet-total {
+    color: #081632 !important;
+    text-shadow: none !important;
+}
+
+.sheet-item.active span[style*="cursor:grab"] {
+    color: #ffffff !important;
+}
+
+/* Sidebar inactive sheets + add-sheet button: same navy as add-row */
+.sheet-item:not(.active),
+.sheet-item:not(.active):hover,
+.sheet-item:not(.active):active,
+.add-sheet-btn,
+.add-sheet-btn:hover,
+.add-sheet-btn:active {
+    background: #081632 !important;
+    background-color: #081632 !important;
+    background-image: none !important;
+}
+
+.sheet-item:not(.active)::before,
+.sheet-item:not(.active)::after {
+    content: none !important;
+    display: none !important;
+}
+
+.sheet-item:not(.active) .sheet-name {
+    color: #00bfff !important;
+}
+
+.sheet-item:not(.active) .sheet-total {
+    color: var(--tone-yellow) !important;
+}
+
+.add-sheet-btn,
+.add-sheet-btn:hover,
+.add-sheet-btn:active {
+    color: #00bfff !important;
+}
+
+/* BOOKS section: remove surrounding container box */
+.book-switcher {
+    background: none !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    clip-path: none !important;
+    padding: 0 !important;
+    margin-bottom: var(--space-3) !important;
+}
+
+.book-list-header,
+.sheet-list-header {
+    color: #00bfff !important;
+    font-family: "HGP創英角ｺﾞｼｯｸUB", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif !important;
+    font-style: italic !important;
+    font-size: 1rem !important;
+    font-weight: 900 !important;
+}
+
+/* Disable hover animations (instant hover state changes) */
+.sheet-item,
+.book-action-btn,
+.add-sheet-btn,
+.summary-tab-btn,
+.row-item,
+.row-drag-handle,
+.action-row-btn,
+.delete-row-btn,
+.sheet-actions button,
+.total-mode-toggle button,
+.add-row-btn,
+.btn-menu,
+.app-controls button,
+.row-input,
+.row-select,
+.sheet-title-input,
+.unit-config,
+.unit-config input {
+    transition: none !important;
+    animation: none !important;
+}
+
+.sheet-item:hover,
+.book-action-btn:hover,
+.add-sheet-btn:hover,
+.summary-tab-btn:hover,
+.row-item:hover,
+.row-drag-handle:hover,
+.action-row-btn:hover,
+.delete-row-btn:hover,
+.sheet-actions button:hover,
+.total-mode-toggle button:hover,
+.add-row-btn:hover,
+.btn-menu:hover,
+.app-controls button:hover {
+    transform: none !important;
+}
+
+
