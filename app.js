@@ -1101,8 +1101,8 @@
                     }
 
                     const operatorBtnStyle = op === 1
-                        ? 'color: var(--success); font-weight:800; font-style:normal; font-size:1.2rem; line-height:1; display:inline-block; width:1em; text-align:center;'
-                        : 'color: var(--error); font-weight:800; font-style:normal; font-size:1.2rem; line-height:1; display:inline-block; width:1em; text-align:center;';
+                        ? 'color: var(--success); font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo","MS PGothic",sans-serif; font-weight:400; font-style:normal; font-size:1.2rem; line-height:1; display:inline-block; width:1em; text-align:center;'
+                        : 'color: var(--error); font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo","MS PGothic",sans-serif; font-weight:400; font-style:normal; font-size:1.2rem; line-height:1; display:inline-block; width:1em; text-align:center;';
 
                     rowEl.innerHTML = `
                         <div class="row-drag-handle" onclick="app.toggleOperator('${sheetId}', '${row.id}')">

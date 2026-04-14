@@ -455,7 +455,7 @@ select {
 
 .unit-config input {
     --unit-input-edge: rgba(144, 205, 255, 0.66);
-    width: 64px;
+    width: 96px;
     height: 28px;
     text-align: center;
     background: rgba(7, 17, 35, 0.97);
@@ -1265,14 +1265,12 @@ main::before {
 .row-value-input.is-minus {
     color: #ffd59b;
     border-color: rgba(255, 186, 88, 0.52);
-    background-color: rgba(58, 37, 12, 0.42);
 }
 
 .row-value-input.is-minus:hover,
 .row-value-input.is-minus:focus {
     color: #ffe2b5;
     border-color: rgba(255, 186, 88, 0.68);
-    background-color: rgba(66, 41, 14, 0.58);
 }
 
 .row-input-area {
@@ -2449,28 +2447,33 @@ select:focus-visible {
 
     .unit-config {
         order: 2;
-        width: 100%;
-        flex: 0 0 100%;
+        width: auto;
+        flex: 0 1 auto;
+        height: var(--tap-min);
         min-height: var(--tap-min);
         min-width: 0;
-        padding: 0 12px;
+        padding: 0 8px 0 10px;
+        gap: 4px;
+        justify-content: flex-start;
         border-radius: 999px !important;
     }
 
     .unit-config input {
-        width: 72px;
+        width: 120px;
+        min-width: 120px;
+        height: 34px;
         min-height: 34px;
     }
 
     .btn-menu {
-        order: 1;
+        order: 2;
         flex: 0 0 auto;
     }
 
     .app-controls {
         order: 1;
-        width: auto;
-        flex: 1 1 auto;
+        width: 100%;
+        flex: 1 1 100%;
         display: flex;
         flex-wrap: nowrap;
         gap: var(--space-2);
@@ -2905,12 +2908,6 @@ main,
 .row-item .row-value-input.is-minus {
     color: #ffd59b !important;
     border-color: rgba(255, 186, 88, 0.48) !important;
-    background-color: #081632 !important;
-}
-
-.row-item .row-value-input.is-minus:hover,
-.row-item .row-value-input.is-minus:focus {
-    background-color: #081632 !important;
 }
 
 .row-item .ref-amount.is-minus {
@@ -3359,9 +3356,9 @@ input[type="number"]::placeholder {
     top: 0;
     left: 0;
     bottom: 0;
-    width: 50%;
+    width: 100%;
     background: #0b53c3 !important;
-    clip-path: polygon(0 0, 100% 0, 52% 100%, 0 100%);
+    clip-path: polygon(0 0, 62% 0, 38% 100%, 0 100%);
     pointer-events: none;
     z-index: 0;
 }
